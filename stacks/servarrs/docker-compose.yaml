@@ -248,6 +248,40 @@ services:
     environment:
       - TZ=America/Denver
 
+# Cleanuparr - Download Cleanup Service
+  cleanuparr:
+    extends:
+      file: common.yaml
+      service: servarrs_common
+    container_name: cleanuparr
+    environment:
+      - PORT="11011"
+      - UMASK="022"
+    healthcheck:
+      test:
+        - CMD
+        - curl
+        - -f
+        - http://localhost:11011/health
+      timeout: 10s
+      interval: 30s
+      retries: 3
+      start_period: 30s
+    image: ghcr.io/cleanuparr/cleanuparr:latest
+    labels:
+      traefik.http.routers.cleanuparr.entrypoints: websecure
+      traefik.http.routers.cleanuparr.rule: Host(`cleanuparr.burgoyne.casa`)
+      traefik.http.routers.cleanuparr.tls: "true"
+      traefik.http.routers.cleanuparr.tls.certresolver: letsencrypt
+    networks:
+      - traefik
+    ports:
+      - 11011:"11011"
+    restart: unless-stopped
+    volumes:
+      - /srv/servarrs/cleanuparr/config:/config
+      - /mnt/h/data/torrents:/downloads
+
   # Tautulli - Plex Monitoring Service
   tautulli:
     extends:

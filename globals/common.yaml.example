@@ -1,0 +1,19 @@
+# Common definitions for the media-suite stack.
+# Import these via YAML anchors in docker-compose.yml:
+#
+# services:
+#   sonarr:
+#     environment:
+#       <<: *common-env
+#     labels:
+#       <<: *proxy-labels
+
+x-common-env: &common-env
+  PUID: ${PUID}
+  PGID: ${PGID}
+  TZ: ${TZ}
+
+x-proxy-labels: &proxy-labels
+  traefik.enable: "true"
+  traefik.http.routers.__APP__.entrypoints: "websecure"
+  traefik.http.routers.__APP__.tls.certresolver: "letsencrypt"

@@ -1,0 +1,26 @@
+# Never commit real env files
+.env
+.env.*
+!*.example
+
+# Explicitly ignore runtime data directories
+**/config/**
+**/data/**
+**/logs/**
+**/backup/**
+**/backups/**
+**/downloads/**
+**/media/**
+**/cache/**
+**/tmp/**
+
+# Prevent committing database files
+*.db
+*.db-shm
+*.db-wal
+
+# OS/Editor noise
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
